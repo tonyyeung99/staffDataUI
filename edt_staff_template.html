@@ -1,12 +1,11 @@
 <!-- <h1>Staff Data Application</h1> -->
-<form ng-controller="EdtStaffDataCtrl" name="userForm">
-<div layout="column" ng-cloak="" class="md-inline-form inputdemoBasicUsage" ng-app="MyApp">
-  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding="">
-    <div>Edit New Staff Record</div>
-  </md-content>
-
-  <md-content layout-padding="">
-    <div>
+<form ng-controller="StaffDataCtrl" name="userForm" ng-init="initEditPage()">
+  <div layout="column" ng-cloak="" class="md-inline-form inputdemoBasicUsage" ng-app="MyApp">
+    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding="">
+      <div>Edit New Staff Record</div>
+    </md-content>
+    <md-content layout-padding="">
+      <div>
         <fieldset>
           <div layout="row">
             <md-input-container class="md-block" flex-gt-xs="">
@@ -18,18 +17,17 @@
               <input ng-model="user.staffName.last">
             </md-input-container>
           </div>
-          </fieldset>
+        </fieldset>
         <div layout-gt-xs="column">
           <md-input-container class="md-block" flex-gt-xs="">
             <label>Title</label>
-            <input ng-model="user.title" >
+            <input ng-model="user.title">
           </md-input-container>
           <md-input-container class="md-block" flex-gt-xs="">
             <label>Division</label>
-            <input ng-model="user.div" >
+            <input ng-model="user.div">
           </md-input-container>
         </div>
-        </fieldset>
         <div layout-gt-sm="column">
           <md-input-container class="md-block" flex-gt-sm="">
             <label>Department</label>
@@ -41,33 +39,31 @@
           </md-input-container>
         </div>
         <fieldset>
-        Phone Number:
+          Phone Number:
           <div layout-gt-sm="column" ng-repeat="number in user.phoneNumbers">
             <div>
-            <md-input-container flex-gt-sm="">
-              <md-select ng-model="number.type">
-                <md-option ng-repeat="type in phoneTypes" value="{{type.abbrev}}">
-                  {{type.abbrev}}
-                </md-option>
-              </md-select>
-              <md-content layout-padding="">
-            </md-input-container>
-            <md-input-container flex-gt-sm="">
-              <label>Number</label>
+              <md-input-container flex-gt-sm="">
+                <md-select ng-model="number.type">
+                  <md-option ng-repeat="type in phoneTypes" value="{{type.abbrev}}">
+                    {{type.abbrev}}
+                  </md-option>
+                </md-select>
+                <md-content layout-padding="">
+              </md-input-container>
+              <md-input-container flex-gt-sm="">
+                <label>Number</label>
                 <input ng-model="number.number">
-            </md-input-container>
-            <button class="remove" ng-show="$last" ng-click="removePhone()">-</button>
+              </md-input-container>
+              <button class="remove" ng-show="$last" ng-click="removePhone()">-</button>
             </div>
           </div>
-
           <md-content layout-padding="">
-          <md-button md-no-ink class="md-primary" ng-click="addNewPhone();" >Add Phone Number</md-button>
+            <md-button md-no-ink class="md-primary" ng-click="addNewPhone();">Add Phone Number</md-button>
         </fieldset>
         <md-content layout-padding="">
-        <md-button class="md-raised md-primary" ng-click="submit();" >Submit</md-button>
+          <md-button class="md-raised md-primary" ng-click="submit();">Edit Submit</md-button>
+      </div>
+      </md-content>
 
-    </div>
-  </md-content>
-
-</div>
+  </div>
 </form>
