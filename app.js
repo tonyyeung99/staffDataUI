@@ -1,7 +1,7 @@
 (function () {
 'use strict';
 
-angular.module('inputBasicDemo', ['ngMaterial', 'ngMessages'])
+angular.module('inputBasicDemo', ['ngMaterial', 'ngMessages', 'ui.router'])
 .controller('StaffDataCtrl', function($scope, $http) {
     $scope.user = {
       staffName: {
@@ -18,6 +18,8 @@ angular.module('inputBasicDemo', ['ngMaterial', 'ngMessages'])
         number: ""
       }]
     };
+
+    $scope.staffRecords = {};
 
 
     $scope.phoneTypes = ('work mobile home').split(' ').map(function(type) {
@@ -52,15 +54,26 @@ angular.module('inputBasicDemo', ['ngMaterial', 'ngMessages'])
   		});
     };
 
-    $scope.retrieve = function() {
-      console.log("retrieve pressed!!")
-      $http.get('http://localhost:8080/staffs/5a8e3fd1b2d287728d4ff243').
-      then(function(response) {
-          $scope.user = response.data;
-          console.log($scope.user);
-      });
-    };
 
+
+    // read all Staff
+    $scope.retrieveAll = function(){
+
+        console.log("retrieveAll called !!")
+        $http.get('http://localhost:8080/staffs/').
+        then(function(response) {
+            $scope.staffRecords = response.data;
+            console.log($scope.staffRecords )
+            console.log("retrieveAll called Success!!")
+        });
+    }
+
+    $scope.showUpdateStaffForm = function(staffId){
+      console.log("Staff id : " + staffId);
+    }
+    $scope.go = function ( path ) {
+      $location.path( path );
+    };
   })
   .config(function($mdThemingProvider) {
 
@@ -69,5 +82,48 @@ angular.module('inputBasicDemo', ['ngMaterial', 'ngMessages'])
     $mdThemingProvider.theme('docs-dark', 'default')
       .primaryPalette('yellow')
       .dark();
-  });
+
+  })
+
+  angular.module('inputBasicDemo')
+  .controller('EdtStaffDataCtrl', function( $scope, $stateParams, $http) {
+    console.log("staffID from $stateParams :" + $stateParams.staffId)
+
+
+    $scope.retrieve = function(staffId) {
+      console.log("retrieve pressed!!")
+      $http.get('http://localhost:8080/staffs/' + staffId).
+      then(function(response) {
+          $scope.user = response.data;
+          console.log($scope.user);
+      });
+    };
+    $scope.user = $scope.retrieve($stateParams.staffId);
+  })
+
+  angular.module('inputBasicDemo')
+  .config(RoutesConfig);
+
+  RoutesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+  function RoutesConfig($stateProvider, $urlRouterProvider){
+
+    $urlRouterProvider
+    .otherwise('/brwStaff');
+
+    $stateProvider
+    .state('brwStaff', {
+      url : '/brwStaff',
+      templateUrl: 'brw_staff_template.html'
+    }).state('addStaff', {
+      url : '/addStaff',
+      templateUrl: 'add_staff_template.html'
+    }).state('edtStaff', {
+      url : '/edtStaff/:staffId',
+      templateUrl: 'edt_staff_template.html',
+      controller : 'EdtStaffDataCtrl'
+    })
+  }
+
+
+
 })();
